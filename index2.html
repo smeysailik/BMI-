@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ពិនិត្យសុខភាព</title>
+    <style>
+            /* General Styling */
+    body {
+           
+            background-image: url('/img/10177.jpg');
+            background-size: 100% 100%;
+
+        }
+
+.container {
+    background-image: url('/img/10177.jpg');
+    background-size: 100% 100%;
+    max-width: 500px;
+    margin: 90px auto;
+    padding: 20px;
+    background: #c4a8ea;
+    
+}
+
+p {
+    text-align: center;
+    color: #1a31fd;
+    margin-bottom: 70px;
+    font-size: 30px;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 16px;
+    border: 2px solid #638cf4;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #5d07de;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #c40cd5;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f8fb;
+    border-left: 5px solid #0415d0;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+}
+    </style>
+
+    
+   
+</head>
+<body>
+    <div class="container">
+        <img src="img/img3.webp" alt="" width="100%" height="100%">
+        <p><u><font face="Khmer OS Moul Light">ពិនិត្យសុខភាព</font></u></p>
+        <form id="healthForm">
+            <label for="name">ឈ្មោះ ៖</label>
+            <input type="text" id="name" placeholder="សូមបញ្ចូលឈ្មោះរបស់អ្នក" required>
+            
+            <label for="age">អាយុ ៖</label>
+            <input type="number" id="age" placeholder="សូមបញ្ចូលអាយុរបស់អ្នក" min="1" required>
+
+            <label for="gender">ភេទ ៖</label>
+            <select id="gender" required>
+                <option value="">ជ្រើសរើសភេទ</option>
+                <option value="male">ប្រុស</option>
+                <option value="female">ស្រី</option>
+            </select>
+
+            <label for="height">កម្ពស់ (in cm) ៖</label>
+            <input type="number" id="height" placeholder="សូមបញ្ចូលកម្ពស់របស់អ្នក cm" min="1" required>
+
+            <label for="weight">ទម្ងន់ (in kg) ៖</label>
+            <input type="number" id="weight" placeholder="សូមបញ្ចូលទម្ងន់របស់អ្នក kg" min="1" required>
+
+            <button type="button" onclick="calculateHealth()">គណនា</button>
+        </form>
+
+        <div class="result" id="result" style="display: none;"></div>
+    </div>
+   
+    <script>
+        function calculateHealth() {
+            // Gather input values
+            const name = document.getElementById('name').value.trim();
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+
+            // Error handling
+            if (!name || isNaN(age) || !gender || isNaN(height) || isNaN(weight) || age <= 0 || height <= 0 || weight <= 0) {
+                alert("សូមបំពេញព័ត៍របស់អ្នកឲ្យបានត្រឹមត្រូវ។");
+                return;
+            }
+
+            // Calculate BMI
+            const heightInMeters = height / 100;
+            const bmi = (weight / (heightInMeters ** 2)).toFixed(1);
+
+            // Determine healthy weight range
+            const minHealthyWeight = (18.5 * (heightInMeters ** 2)).toFixed(1);
+            const maxHealthyWeight = (24.9 * (heightInMeters ** 2)).toFixed(1);
+
+            // Construct personalized feedback message
+            let  message = `<strong>Hello, ${name} (${gender}, Age: ${age})!</strong><br>BMI របស់អ្នកគឺ៖" <strong>${bmi}</strong>. `;
+            if (bmi < 18.5) {
+                message += `អ្នក​មាន​ទម្ងន់​តិច។ អ្នកត្រូវទទួលបានយ៉ាងហោចណាស់ ${(minHealthyWeight - weight).toFixed(1)} kg ដើម្បីឈានដល់ទម្ងន់ដែលមានសុខភាពល្អ។`;
+            } else if (bmi > 24.9) {
+                message += `អ្នកលើសទម្ងន់។ យ៉ាងហោចណាស់អ្នកត្រូវបាត់បង់ ${(weight - maxHealthyWeight).toFixed(1)} kg ដើម្បីឈានដល់ទម្ងន់ដែលមានសុខភាពល្អ។`;
+            } else {
+                message += "អ្នកស្ថិតនៅក្នុងជួរទម្ងន់ដែលមានសុខភាពល្អ។ សូមរក្សាទម្ងន់របស់អ្នក!";
+            }
+
+            // Display the result
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = message;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
